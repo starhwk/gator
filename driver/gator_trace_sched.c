@@ -190,8 +190,10 @@ GATOR_DEFINE_PROBE(task_rename, TP_PROTO(struct task_struct *task, const char *c
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 35)
 GATOR_DEFINE_PROBE(sched_switch, TP_PROTO(struct rq *rq, struct task_struct *prev, struct task_struct *next))
-#else
+#elif LINUX_VERSION_CODE < KERNEL_VERSION(4, 4, 0)
 GATOR_DEFINE_PROBE(sched_switch, TP_PROTO(struct task_struct *prev, struct task_struct *next))
+#else
+GATOR_DEFINE_PROBE(sched_switch, TP_PROTO(bool preempt, struct task_struct *prev, struct task_struct *next))
 #endif
 {
 	int state;
